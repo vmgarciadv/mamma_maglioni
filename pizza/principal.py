@@ -3,7 +3,7 @@ from decoradores import AdicionalesDecorator, Jamon, Champiñones, Pimenton, Dob
 
 pizza = PizzaPersonal()
 extra = Jamon(pizza)
-
+ 
 print(extra.informacion())
 
 pizza = PizzaMediana()
