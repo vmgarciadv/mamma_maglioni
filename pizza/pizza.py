@@ -35,7 +35,7 @@ class PizzaPersonal(Pizza):
 
 class PizzaMediana(Pizza):
 
-    def __init__(self, size):
+    def __init__(self):
         size = "Mediana"
         precio = 15
         Pizza.__init__(self, size, precio)
@@ -44,7 +44,7 @@ class PizzaMediana(Pizza):
 
 class PizzaFamiliar(Pizza):
 
-    def __init__(self, size):
+    def __init__(self):
         size = "Familiar"
         precio = 20
         Pizza.__init__(self, size, precio)
