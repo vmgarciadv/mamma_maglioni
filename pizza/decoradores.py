@@ -10,61 +10,39 @@ def overrides(interface_class): #esto es para que funcione el @override en pytho
 """clase AdicionalesDecorador. Decoradora principal del cual implementaran
 los decoradores concretos"""
 
-class AdicionalesDecorator(Pizza):
-    
-    def get_size(self):
-        return self.size
+class IngredientesDecorator(Pizza):
+    @abstractmethod
+    def get_precio(self):
+        pass
 
-class Jamon(AdicionalesDecorator):
-
-    def __init__(self, pizza):
-        Pizza.__init__(self, pizza.size, pizza.precio)
-
-    def get_size(self):
-        return self.size
-
-    @overrides(AdicionalesDecorator)
-    def get_precio(self):      
-        if self.size == "Personal":
-            return self.precio + 1.5
-        elif self.size == "Mediana":
-            return self.precio + 1.75
-        else:
-            return self.precio + 2.00
-    
-    """
-    def set_precio(self):
-        if self.size == "Personal":
-            self.precio += 1.5
-    """
-          
-    @overrides(AdicionalesDecorator)
+    @abstractmethod
     def informacion(self):
-        return self.get_size() + " con Jamon y cuesto " + str(self.get_precio())
+        pass
 
-class Champiñones(AdicionalesDecorator):
-
+class Jamon(IngredientesDecorator):
     def __init__(self, pizza):
-        Pizza.__init__(self, pizza.size, pizza.precio)
+        Pizza.__init__(self, pizza.size)
+        self.pizza = pizza
 
-    def get_size(self):
-        return self.size
+    def get_precio(self):
+        return 1.5 + self.pizza.get_precio()
 
-    @overrides(AdicionalesDecorator)
-    def get_precio(self):      
-        if self.size == "Personal":
-            return self.precio + 1.75
-        elif self.size == "Mediana":
-            return self.precio + 2.05
-        else:
-            return self.precio + 2.50
-    
-      
-    @overrides(AdicionalesDecorator)
     def informacion(self):
-        return self.get_size() + " con Champiñón y cuesto " + str(self.get_precio())
+        return self.pizza.informacion() + "Jamon, "  
 
-class Pimenton(AdicionalesDecorator):
+class Champiñones(IngredientesDecorator):
+    def __init__(self, pizza):
+        Pizza.__init__(self, pizza.size)
+        self.pizza = pizza
+
+    def get_precio(self):
+        return 1.75 + self.pizza.get_precio()
+
+    def informacion(self):
+        return self.pizza.informacion() + "Champiñones, "
+
+"""
+class Pimenton(IngredientesDecorator):
 
     def __init__(self, pizza):
         Pizza.__init__(self, pizza.size, pizza.precio)
@@ -72,7 +50,7 @@ class Pimenton(AdicionalesDecorator):
     def get_size(self):
         return self.size
 
-    @overrides(AdicionalesDecorator)
+    @overrides(IngredientesDecorator)
     def get_precio(self):      
         if self.size == "Personal":
             return self.precio + 1.5
@@ -82,11 +60,11 @@ class Pimenton(AdicionalesDecorator):
             return self.precio + 2.00
     
       
-    @overrides(AdicionalesDecorator)
+    @overrides(IngredientesDecorator)
     def informacion(self):
         return self.get_size() + " con Pimentón y cuesto " + str(self.get_precio())
 
-class DobleQueso(AdicionalesDecorator):
+class DobleQueso(IngredientesDecorator):
 
     def __init__(self, pizza):
         Pizza.__init__(self, pizza.size, pizza.precio)
@@ -94,7 +72,7 @@ class DobleQueso(AdicionalesDecorator):
     def get_size(self):
         return self.size
 
-    @overrides(AdicionalesDecorator)
+    @overrides(IngredientesDecorator)
     def get_precio(self):      
         if self.size == "Personal":
             return self.precio + 0.80
@@ -104,11 +82,11 @@ class DobleQueso(AdicionalesDecorator):
             return self.precio + 1.70
     
       
-    @overrides(AdicionalesDecorator)
+    @overrides(IngredientesDecorator)
     def informacion(self):
         return self.get_size() + " con doble queso y cuesto " + str(self.get_precio())
 
-class Aceitunas(AdicionalesDecorator):
+class Aceitunas(IngredientesDecorator):
 
     def __init__(self, pizza):
         Pizza.__init__(self, pizza.size, pizza.precio)
@@ -116,7 +94,7 @@ class Aceitunas(AdicionalesDecorator):
     def get_size(self):
         return self.size
 
-    @overrides(AdicionalesDecorator)
+    @overrides(IngredientesDecorator)
     def get_precio(self):      
         if self.size == "Personal":
             return self.precio + 1.80
@@ -126,11 +104,11 @@ class Aceitunas(AdicionalesDecorator):
             return self.precio + 2.60
     
       
-    @overrides(AdicionalesDecorator)
+    @overrides(IngredientesDecorator)
     def informacion(self):
         return self.get_size() + " con Aceitunas y cuesto " + str(self.get_precio())
 
-class Pepperoni(AdicionalesDecorator):
+class Pepperoni(IngredientesDecorator):
 
     def __init__(self, pizza):
         Pizza.__init__(self, pizza.size, pizza.precio)
@@ -138,7 +116,7 @@ class Pepperoni(AdicionalesDecorator):
     def get_size(self):
         return self.size
 
-    @overrides(AdicionalesDecorator)
+    @overrides(IngredientesDecorator)
     def get_precio(self):      
         if self.size == "Personal":
             return self.precio + 1.25
@@ -148,11 +126,11 @@ class Pepperoni(AdicionalesDecorator):
             return self.precio + 1.90
     
       
-    @overrides(AdicionalesDecorator)
+    @overrides(IngredientesDecorator)
     def informacion(self):
         return self.get_size() + " con Aceitunas y cuesto " + str(self.get_precio())
 
-class Salchichon(AdicionalesDecorator):
+class Salchichon(IngredientesDecorator):
 
     def __init__(self, pizza):
         Pizza.__init__(self, pizza.size, pizza.precio)
@@ -160,7 +138,7 @@ class Salchichon(AdicionalesDecorator):
     def get_size(self):
         return self.size
 
-    @overrides(AdicionalesDecorator)
+    @overrides(IngredientesDecorator)
     def get_precio(self):      
         if self.size == "Personal":
             return self.precio + 1.60
@@ -170,6 +148,7 @@ class Salchichon(AdicionalesDecorator):
             return self.precio + 2.10
     
       
-    @overrides(AdicionalesDecorator)
+    @overrides(IngredientesDecorator)
     def informacion(self):
         return self.get_size() + " con Salchichón y cuesto " + str(self.get_precio())
+        """

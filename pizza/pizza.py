@@ -10,43 +10,36 @@ def overrides(interface_class): #esto es para que funcione el @override en pytho
 
 class Pizza(ABC):
 
-    def __init__(self, size, precio):
+    def __init__(self, size):
         self.size = size
-        self.precio = precio
+        super().__init__()
 
-    def get_size(self):
-        return self.size
-
+    @abstractmethod
     def get_precio(self):
-        return self.precio
+        pass
 
     def informacion(self):
-        return "Soy una pizza " + self.get_size()
+        return "Soy una pizza " + self.size + " con: "
 
 """Hijas concretas"""
 
 class PizzaPersonal(Pizza):
-
     def __init__(self):
-        size = "Personal"
-        precio = 10
-        Pizza.__init__(self, size, precio)
-        
+        Pizza.__init__(self, "Personal")
+
+    def get_precio(self):
+        return 10
 
 class PizzaMediana(Pizza):
-
     def __init__(self):
-        size = "Mediana"
-        precio = 15
-        Pizza.__init__(self, size, precio)
+        Pizza.__init__(self, "Mediana")
 
-
+    def get_precio(self):
+        return 15
 
 class PizzaFamiliar(Pizza):
-
     def __init__(self):
-        size = "Familiar"
-        precio = 20
-        Pizza.__init__(self, size, precio)
+        Pizza.__init__(self, "Familiar")
 
-
+    def get_precio(self):
+        return 20
