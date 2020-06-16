@@ -3,7 +3,7 @@ from decoradores import IngredientesDecorator, Jamon, Champiñones #, Pimenton, 
 
 
 
-pizza = PizzaPersonal()
+pizza = PizzaFamiliar()
 pizza = Jamon(pizza)
 pizza = Champiñones(pizza)
 print(pizza.informacion() + "y cuesto " +str(pizza.get_precio()))

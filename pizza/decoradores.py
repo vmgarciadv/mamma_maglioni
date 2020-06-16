@@ -23,9 +23,14 @@ class Jamon(IngredientesDecorator):
     def __init__(self, pizza):
         Pizza.__init__(self, pizza.size)
         self.pizza = pizza
-
+    
     def get_precio(self):
-        return 1.5 + self.pizza.get_precio()
+        if self.size == "Personal":
+            return 1.5 + self.pizza.get_precio()
+        elif self.size == "Mediana":
+            return 1.75 + self.pizza.get_precio()
+        else:
+            return 2.00 + self.pizza.get_precio()
 
     def informacion(self):
         return self.pizza.informacion() + "Jamon, "  
@@ -36,7 +41,12 @@ class Champiñones(IngredientesDecorator):
         self.pizza = pizza
 
     def get_precio(self):
-        return 1.75 + self.pizza.get_precio()
+        if self.size == "Personal":
+            return 1.75 + self.pizza.get_precio()
+        elif self.size == "Mediana":
+            return 2.05 + self.pizza.get_precio()
+        else:
+            return 2.50 + self.pizza.get_precio()
 
     def informacion(self):
         return self.pizza.informacion() + "Champiñones, "
