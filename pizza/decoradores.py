@@ -1,11 +1,5 @@
 from abc import ABC, abstractmethod #modulo ABC para clases abstractas
-from pizza import Pizza
-
-def overrides(interface_class): #esto es para que funcione el @override en python
-    def overrider(method):
-        assert(method.__name__ in dir(interface_class))
-        return method
-    return overrider
+from pizzas import Pizza
 
 """clase AdicionalesDecorador. Decoradora principal del cual implementaran
 los decoradores concretos"""

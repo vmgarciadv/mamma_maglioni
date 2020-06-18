@@ -1,16 +1,20 @@
-from pizza import Pizza, PizzaPersonal, PizzaMediana, PizzaFamiliar
-from decoradores import IngredientesDecorator, Jamon, Champiñones, Pimenton, DobleQueso, Aceitunas, Pepperoni, Salchichon
+from archivo import File
+
+ejecucion = File()
+ejecucion.start()
 
 
-precio = 0
+#precio = 0
 #pedido = open ('../pedidos1.pz','r') #archivo almacenado en home
 
-"""se encarga de buscar todas las pizzas personales"""
+"""se encarga de buscar todas las pizzas personales
 def Personal(precio): 
-    print()
+
     palabra = 'personal'
     ocurrencias = []
-    with open('../pedidos1.pz') as lineas:
+ 
+
+    with open('/home/victor/pedidos1.pz') as lineas:
         for linea in lineas:
             if palabra in linea:
                 ocurrencias.append(linea) #guarda todas las pizzas personales
@@ -46,7 +50,7 @@ def Mediana(precio):
     print()
     palabra = 'mediana'
     ocurrencias = []
-    with open('../pedidos1.pz') as lineas:
+    with open('/home/victor/pedidos1.pz') as lineas:
         for linea in lineas:
             if palabra in linea:
                 ocurrencias.append(linea) #guarda todas las pizzas medianas
@@ -83,7 +87,7 @@ def Familiar(precio):
     print()
     palabra = 'familiar'
     ocurrencias = []
-    with open('../pedidos1.pz') as lineas:
+    with open('/home/victor/pedidos1.pz') as lineas:
         for linea in lineas:
             if palabra in linea:
                 ocurrencias.append(linea) #guarda todas las pizzas familiares
@@ -119,7 +123,8 @@ Mediana(precio)
 Familiar(precio)
 
 #pizza = PizzaPersonal()
-"""pizza = Jamon(pizza)
+pizza = Jamon(pizza)
 pizza = Champiñones(pizza)
-pizza = Salchichon(pizza)"""
+pizza = Salchichon(pizza)
 #print(pizza.informacion() + "y cuesto " +str(pizza.get_precio()))
+"""
