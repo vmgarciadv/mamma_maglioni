@@ -10,28 +10,28 @@ def sql_connection():
 
 def sql_table(conn):
     cursor = conn.cursor()
-
-    cursor.execute("create table pizza(id integer not null primary key, size text not null, precio real not null, fk_pedido integer)")
-    cursor.execute("create table ingrediente(id integer primary key, nombre text not null)")
-    cursor.execute("create table pedido(id integer primary key, nombre_cliente text not null, fecha text not null)")
-    cursor.execute("create table piz_ing(id integer primary key, precio real not null, fk_pizza integer, fk_ingrediente integer)")
-
+    cursor.execute("CREATE TABLE cliente(id integer PRIMARY KEY,nombre text NOT NULL, apellido text NOT NULL)")
+    cursor.execute("CREATE TABLE pizza(id integer PRIMARY KEY,size text NOT NULL,precio real NOT NULL)")
+    cursor.execute("CREATE TABLE ingrediente(id integer PRIMARY KEY,nombre text NOT NULL, precio real NOT NULL)")
+    cursor.execute("CREATE TABLE pedido(id integer NOT NULL,fecha date NOT NULL,fk_cliente integer NOT NULL,PRIMARY KEY (id,fk_cliente),FOREIGN KEY (fk_cliente) REFERENCES cliente (id))")
+    cursor.execute("CREATE TABLE pedi_piz(fk_pizza integer NOT NULL, fk_pedido integer NOT NULL, fk_cliente integer NOT NULL,PRIMARY KEY (fk_pizza,fk_pedido,fk_cliente),FOREIGN KEY (fk_pizza) REFERENCES pizza (id),FOREIGN KEY (fk_pedido,fk_cliente) REFERENCES pedido (id,fk_cliente))")
+    cursor.execute("CREATE TABLE pedi_ing(fk_ingrediente integer NOT NULL, fk_pedido integer NOT NULL, fk_cliente integer NOT NULL, fk_pizza integer NOT NULL, fk_pedido1 integer NOT NULL, fk_cliente1 integer NOT NULL, PRIMARY KEY (fk_ingrediente, fk_pedido, fk_cliente, fk_pizza, fk_pedido1, fk_cliente1), FOREIGN KEY (fk_ingrediente) REFERENCES ingrediente(id), FOREIGN KEY (fk_pedido,fk_cliente) REFERENCES pedido(id,fk_cliente), FOREIGN KEY (fk_pizza,fk_pedido1,fk_cliente1) REFERENCES pedi_piz (fk_pizza, fk_pedido1, fk_cliente1))")
     conn.commit()
 
 def sql_insert(conn):
     cursor = conn.cursor()
-    
-    ingredientes = [("Jamon",), ("Champinones",), ("Pimenton",), ("Doble queso",), ("Aceitunas",), ("Pepperoni",), ("Salchichon",),]
-    cursor.executemany("insert into ingrediente(nombre) values (?)", ingredientes)
-
-    pizzas = [("Personal", 10,), ("Mediana", 15,), ("Familiar", 20,),]
+    ingredientes = [("p_Jamon",1.5,),("m_Jamon",1.75,),("f_Jamon",2.00,), 
+                    ("p_Champinones",1.75,),("m_Champinones",2.05,),("f_Champinones",2.50,), 
+                    ("p_Pimenton",1.5,),("m_Pimenton",1.75,),("g_Pimenton",2.00,), 
+                    ("Doble queso",0.80,),("Doble queso",1.30,),("Doble queso",1.70,),
+                    ("Aceitunas",1.80,),("Aceitunas",2.15,),("Aceitunas",2.60,), 
+                    ("Pepperoni",1.25,),("Pepperoni",1.70,),("Pepperoni",1.90,), 
+                    ("Salchichon",1.60,),("Salchichon",1.85,),("Salchichon",2.10),]
+    cursor.executemany("insert into ingrediente(nombre,precio) values (?,?)", ingredientes)
+    pizzas = [("Personal", 10,), 
+              ("Mediana", 15,), 
+              ("Familiar", 20,),]
     cursor.executemany("insert into pizza(size, precio) values (?, ?)", pizzas)
-
-    piz_ing = [(1.5, 1, 1), (1.75, 1, 2), (1.5, 1, 3), (0.80, 1, 4), (1.80, 1, 5), (1.25, 1, 6), (1.60, 1, 7), 
-               (1.75, 2, 1), (2.05, 2, 2), (1.75, 2, 3), (1.30, 2, 4), (2.15, 2, 5), (1.70, 2, 6), (1.85, 2, 7),
-               (2.00, 3, 1), (2.50, 3, 2), (2.00, 3, 3), (1.70, 3, 4), (2.60, 3, 5), (1.90, 3, 6), (2.10, 3, 7),]
-    cursor.executemany("insert into piz_ing(precio, fk_pizza, fk_ingrediente) values (?, ?, ?)", piz_ing)
-
     conn.commit()
 
 conn = sql_connection()
