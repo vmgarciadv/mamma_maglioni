@@ -7,11 +7,20 @@ class File():
         self.ruta = None
         self.pizzas = []
     
-    def search(self, name):
-        for root, dirs, files in os.walk('/home/'):
+    def search(self, name, os):
+        if(os == 'Windows'):
+            self.specific_os_search(name,'C:/Users/Daren/Documents')
+        elif(os == 'Linux'):
+            self.specific_os_search(name,'/home/')
+        else:
+            self.specific_os_search(name,'NO TENGO NI LA MAS MINIMA IDEA DE CUAL ES EL ROOT DE MAC, PREGUNTENLE A JOSELITO')
+    
+    def specific_os_search(self,name,dir):
+        for root, dirs, files in os.walk(dir):
             if name in files:
                 self.ruta = root + "/" + name
-
+                break
+        
     def set_pizzas(self):
         with open(self.ruta) as lineas:
             for linea in lineas:
@@ -49,8 +58,8 @@ class File():
             precio += pizza.get_precio()
         print("Total ventas  = ", precio)
 
-    def start(self):
-        arc = input("Nombre del archivo de pedidos: ")
-        self.search(arc)
+    def start(self,arc,os):
+        #arc = input("Nombre del archivo de pedidos: ")
+        self.search(arc,os)
         self.set_pizzas()
         self.get_pizzas()
