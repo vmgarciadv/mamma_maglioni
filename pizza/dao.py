@@ -2,7 +2,7 @@ import sqlite3
 from sqlite3 import Error
 
 class DAO():
-
+    #Crea la conexion con la base de datos
     def create_connection(self):
         try:
             conexion = sqlite3.connect('mamma_maglioni.db')
@@ -10,14 +10,15 @@ class DAO():
             return conexion
         except Error:
             print(Error)
-
+    #Cierra la conexion con la base de datos
     def cerrar_connection(self, conexion):
         try:
             conexion.close()
             print("Cerrada la conexion con la base de datos.")
         except:
             print("No se pudo cerrar la conexion con la base de datos.")
-    
+
+    #Inserta cliente en la base de datos por medio de los archivos
     def insert_cliente(self, conexion, cli):
         cursor = conexion.cursor()
         i = 0
@@ -42,7 +43,7 @@ class DAO():
                 print(row)"""
         except: 
             print('def insert_cliente: Los datos no pudieron insertarse.')
-
+    #Inserta los pedidos en la base de datos por medio de los archivos
     def insert_pedido(self, conexion, fecha, id_cli):
         cursor = conexion.cursor()
         try:
@@ -64,6 +65,7 @@ class DAO():
                 return row[0]
         except: 
             print('def buscar_pizza_size: No se encontraron datos')
+
     #Retorna el tamano de la pizza por su id
     def buscar_pizza(self,conexion,id_pizza):
         cursor = conexion.cursor()
@@ -97,12 +99,14 @@ class DAO():
         except: 
             print('def buscar_ingrediente: No se encontraron datos')
 
+    #Modifica el ingrediente para que se ingresen a la bd con un formato estandar sin caracteres especiales
     def modificar_ing(self,ingrediente):
         if ingrediente == 'champiñones': ingrediente = 'champinones'
         elif ingrediente == 'jamón': ingrediente = 'jamon'
         elif ingrediente == 'pimentón': ingrediente = 'pimenton'
         return ingrediente
 
+    #Retorna una lista de las id de los ingredientes al registrar en un pedido
     def list_id_ingr(self,conexion,ingredientes,pizza):
         cursor = conexion.cursor()
         id_list_ingr = []
@@ -121,6 +125,7 @@ class DAO():
             print('def list_id_ingr: No se encontraron datos')
         return id_list_ingr
 
+    #Inserta en la tabla pedi_pizza las foraneas respectivas que conforman un pedido.
     def insert_pedi_pizza(self,conexion,id_ped,pizza,ingredientes):
         i=0
         cursor = conexion.cursor()
