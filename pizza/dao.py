@@ -6,7 +6,7 @@ class DAO():
     def create_connection(self):
         try:
             conexion = sqlite3.connect('mamma_maglioni.db')
-            input("Se ha establecido la conexion con la base de datos.")
+            print("Se ha establecido la conexion con la base de datos.")
             return conexion
         except Error:
             print(Error)
@@ -17,17 +17,6 @@ class DAO():
             print("Cerrada la conexion con la base de datos.")
         except:
             print("No se pudo cerrar la conexion con la base de datos.")
-
-    """def insert_pedido(self, conexion, pizza):
-        cursor = conexion.cursor()
-        try:
-            pizzas = [("Personal", 10,), 
-                    ("Mediana", 15,), 
-                    ("Familiar", 20,),]
-            cursor.executemany("insert into pizza(size, precio) values (?, ?)", pizzas)
-            conexion.commit()
-        except: 
-            print('Los datos no pudieron insertarse.')"""
     
     def insert_cliente(self, conexion, cli):
         cursor = conexion.cursor()

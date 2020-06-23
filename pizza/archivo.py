@@ -38,7 +38,7 @@ class File():
                 cliente += x
             if x == ";": break
         return cliente
-
+    #Funciona para obtener la fecha de las lineas que se extrajeron del documento
     def obtener_fecha(self, cli_fech):
         i=0
         fecha = ""
@@ -49,7 +49,7 @@ class File():
         date_time_str = fecha
         date_time_obj = datetime.strptime(date_time_str, '%d/%m/%Y')
         return (str(date_time_obj))
-
+    #Funciona para obtener los ingredientes de las lineas que se extrajeron del documento
     def obtener_ingredientes(self, pizz_ing):
         i=0
         ing = ""

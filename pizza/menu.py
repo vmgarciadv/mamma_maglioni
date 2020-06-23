@@ -15,7 +15,7 @@ def main():
 
 def menu_principal(local,controlArchivos,sistema):
     conn = DAO()
-    conexion = conn.create_connection()
+    conexion = conn.create_connection() #Llama a la funcion para crear la conexion con la BD
     repetir = True
     while (repetir):
         clear()
