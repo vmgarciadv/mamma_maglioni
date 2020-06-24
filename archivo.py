@@ -46,9 +46,14 @@ class File():
             if (i == 1 and x != "\n"):
                 fecha += x
             if x == ";": i=1
-        date_time_str = fecha
-        date_time_obj = datetime.strptime(date_time_str, '%d/%m/%Y')
-        return (str(date_time_obj))
+        try:
+            date_time_str = fecha
+            date_time_obj = datetime.strptime(date_time_str, '%d/%m/%Y')
+            return (str(date_time_obj))
+        except:
+            fecha = ""
+            return fecha    
+        
     #Funciona para obtener los ingredientes de las lineas que se extrajeron del documento
     def obtener_ingredientes(self, pizz_ing):
         i=0
@@ -73,8 +78,12 @@ class File():
                 cli_fech = r
                 cli = self.obtener_cliente_pizza(cli_fech)
                 fech = self.obtener_fecha(cli_fech)
-                id_cli = db.insert_cliente(conexion,cli)
-                id_ped = db.insert_pedido(conexion,fech,id_cli)
+                if (";" in cli_fech) and (cli != "") and (fech != ""): 
+                    id_cli = db.insert_cliente(conexion,cli)
+                    id_ped = db.insert_pedido(conexion,fech,id_cli)
+                else:
+                    input("El formato de los pedidos es incorrecto.")
+                    break
             if 'personal' in r or 'mediana' in r or 'familiar' in r:
                 pizz_ing = r
                 pizz = self.obtener_cliente_pizza(pizz_ing)
@@ -82,7 +91,6 @@ class File():
                 db.insert_pedi_pizza(conexion,id_ped,pizz,ing)
             if(r == 'COMIENZO_PEDIDO\n'): i=1
             else: i=0
-        print("\nRegistrado los pedidos en la base de datos.\n")
         
     def set_pizzas(self):
         with open(self.ruta) as lineas:

@@ -127,7 +127,6 @@ class DAO():
 
     #Inserta en la tabla pedi_pizza las foraneas respectivas que conforman un pedido.
     def insert_pedi_pizza(self,conexion,id_ped,pizza,ingredientes):
-        i=0
         cursor = conexion.cursor()
         id_pizza = self.buscar_pizza_size(conexion,pizza)
         id_ing = self.list_id_ingr(conexion,ingredientes,pizza)
@@ -146,12 +145,16 @@ class DAO():
                 print('def insert_pedi_pizza: Los datos no pudieron insertarse.')
         else:
             try:
+                pizzas = (id_pizza, id_ped)
+                cursor.execute("insert into pedi_pizza(fk_pizza, fk_pedido) values (?, ?)", pizzas)
+                conexion.commit()
                 for x in range(0,len(id_ing)): 
-                    pizzas = (id_ing[x], id_pizza, id_ped)
+                    pizzas = (id_ing[x], id_ped)
                     #print("Pizza: ",self.buscar_pizza(conexion,id_pizza)) 
                     #print("Pedido del cliente: ", self.buscar_cliente(conexion,id_ped))
                     #print("Ingredientes: ", self.buscar_ingrediente(conexion,id_ing[x]))
-                    cursor.execute("insert into pedi_pizza(fk_ingrediente, fk_pizza, fk_pedido) values (?, ?, ?)", pizzas)
+                    cursor.execute("insert into pedi_ing(fk_ingrediente, fk_pedido) values (?, ?)", pizzas)
                     conexion.commit()
             except: 
                 print('def insert_pedi_pizza: Los datos no pudieron insertarse.')
+        print("\nRegistrado los pedidos en la base de datos.\n")

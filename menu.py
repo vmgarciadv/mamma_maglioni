@@ -42,7 +42,10 @@ def menu_principal(local,controlArchivos,sistema):
 def procesar_archivo(controlArchivos,sistema,conexion):
     clear()
     archivo = input('Por favor indique el nombre del archivo: ')
-    controlArchivos.start(archivo, sistema, conexion)
+    try:
+        controlArchivos.start(archivo, sistema, conexion)
+    except:
+        print("\nEl archivo indicado no puede ser procesado.\n")
 
 def generar_reporte():
     print('No existo')

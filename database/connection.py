@@ -16,7 +16,8 @@ def sql_table(conn):
         cursor.execute("CREATE TABLE pizza(id integer PRIMARY KEY,size text NOT NULL UNIQUE,precio real NOT NULL)")
         cursor.execute("CREATE TABLE ingrediente(id integer PRIMARY KEY,nombre text NOT NULL, precio real NOT NULL)")
         cursor.execute("CREATE TABLE pedido(id integer NOT NULL,fecha date NOT NULL,fk_cliente integer NOT NULL,PRIMARY KEY (id),FOREIGN KEY (fk_cliente) REFERENCES cliente(id))")
-        cursor.execute("CREATE TABLE pedi_pizza(id integer NOT NULL, fk_ingrediente integer, fk_pizza integer NOT NULL, fk_pedido integer NOT NULL, PRIMARY KEY (id), FOREIGN KEY (fk_ingrediente) REFERENCES ingrediente(id), FOREIGN KEY (fk_pizza) REFERENCES pizza(id), FOREIGN KEY (fk_pedido) REFERENCES pedido(id))")
+        cursor.execute("CREATE TABLE pedi_pizza(id integer NOT NULL, fk_pizza integer NOT NULL, fk_pedido integer NOT NULL, PRIMARY KEY (id), FOREIGN KEY (fk_pizza) REFERENCES pizza(id), FOREIGN KEY (fk_pedido) REFERENCES pedido(id))")
+        cursor.execute("CREATE TABLE pedi_ing(id integer NOT NULL, fk_ingrediente integer NOT NULL, fk_pedido integer NOT NULL, PRIMARY KEY (id), FOREIGN KEY (fk_ingrediente) REFERENCES ingrediente(id), FOREIGN KEY (fk_pedido) REFERENCES pedido(id))")
         conn.commit()
     except:
         print('Las tablas ya han sido creadas.')
