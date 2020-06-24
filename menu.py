@@ -54,8 +54,37 @@ def procesar_archivo(controlArchivos,sistema,conexion):
     except:
         print("\nEl archivo indicado no puede ser procesado.\n")
 
+    
 def generar_reporte():
-    print('No existo')
+    clear()
+    conexion = sqlite3.connect('mamma_maglioni.db') #me conecto a la BD
+    cursor = conexion.cursor()
+    cursor.execute("SELECT COUNT(distinct fecha) FROM pedido") #busco cuántas fechas hay en el archivo, de esa forma sabré hasta donde el archivo debe leer 
+    fecha = cursor.fetchone()
+    cursor.execute("SELECT p.size, COUNT(pp.fk_pizza), SUM(p.precio) FROM pizza p, pedi_pizza pp, pedido pe where pp.fk_pizza = p.id and pp.fk_pedido = pe.id GROUP BY pp.fk_pizza;")
+    resultado = cursor.fetchall()
+    contador =  1
+    while contador <= fecha[0]:   #contador debe ser menor que el numero de fechas  en caso de pedidos1.pz menor a 2 (5/06 y 6/06)
+        reporte = open("../mamma_maglioni/reporte.txt", "w")
+        cursor.execute("SELECT distinct fecha FROM pedido")
+        fechas = cursor.fetchall()
+
+        for fechita in fechas: #por cada fecha escribo en el archivo su pedido
+            reporte.write("Fecha " + ''.join(fechita) + os.linesep) #os.linesep es para saltar de linea
+            reporte.write(os.linesep)
+            reporte.write("Venta total " + os.linesep)
+            reporte.write(os.linesep)
+            reporte.write("Ventas por pizza (sin incluir adicionales):" + os.linesep)
+            reporte.write("Tamaño               Unidades                Monto UMs" + os.linesep)
+
+            #aqui van todas las consultas por fecha
+
+            reporte.write(os.linesep)
+        contador  += 1
+        reporte.close()
+
+
+    input("Presiona Enter para continuar...")
 
 def ejemplo_archivo():
     clear()
