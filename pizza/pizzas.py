@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod #modulo ABC para clases abstractas
 """Super clase Pizza"""
 
 class Pizza(ABC):
-
     def __init__(self, size):
         self.size = size
         super().__init__()

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod #modulo ABC para clases abstractas
-from pizzas import Pizza
+from pizza.pizzas import Pizza
 
 """clase AdicionalesDecorador. Decoradora principal del cual implementaran
 los decoradores concretos"""

@@ -2,13 +2,9 @@ import platform
 import os
 from dao import DAO
 from archivo import File
-import sys
-sys.path.append("../")
-from mamma_maglioni.database.connection import *
+from database.connection import *
 
 def main():
-    sql_connection()
-    
     local = 'Mamma Maglioni'
     controlArchivos = File()
     sistema = platform.system()
