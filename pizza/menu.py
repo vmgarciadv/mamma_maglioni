@@ -48,8 +48,27 @@ def procesar_archivo(controlArchivos,sistema,conexion):
     archivo = input('Por favor indique el nombre del archivo: ')
     controlArchivos.start(archivo, sistema, conexion)
 
+    
 def generar_reporte():
-    print('No existo')
+    clear()
+    conexion = sqlite3.connect('mamma_maglioni.db')
+    cursor = conexion.cursor()
+    cursor.execute("SELECT COUNT(distinct fecha) FROM pedido")
+    fecha = cursor.fetchone()
+    contador =  1
+    while contador <= fecha[0]:     
+        reporte = open("../mamma_maglioni/reporte.txt", "w")
+        cursor.execute("SELECT distinct fecha FROM pedido")
+        fechas = cursor.fetchall()
+        for fechita in fechas:
+            reporte.write("Fecha " + ''.join(fechita) + os.linesep)
+            reporte.write("Venta total" + os.linesep)
+            reporte.write("Ventas por pizza (sin incluir adicionales):" + os.linesep)
+        contador  = 3
+        reporte.close()
+
+
+    input("Presiona Enter para continuar...")
 
 def clear():
     if os.name == "nt":
