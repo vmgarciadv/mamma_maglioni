@@ -1,1 +1,1 @@
-from .archivo import File
+from archivo import File

@@ -2,7 +2,8 @@ import platform
 import os
 from dao import DAO
 from archivo import File
-from termcolor import colored, cprint
+
+
 
 def main():
     local = 'Mamma Maglioni'
@@ -19,7 +20,7 @@ def menu_principal(local,controlArchivos,sistema):
     repetir = True
     while (repetir):
         clear()
-        print(f'Bienvenido al sistema de control de la pizzeria', colored(local,'yellow'))
+        print('Bienvenido al sistema de control de la pizzeria')
         print('Por favor indique que desea realizar:')
         print('     1.-Procesar archivo de pedidos')
         print('     2.-Generar resumen de ventas')
@@ -36,7 +37,7 @@ def menu_principal(local,controlArchivos,sistema):
             conn.cerrar_connection(conexion)
         else:
             clear()
-            print(colored('Esa no es una opcion valida, por favor intentelo nuevamente','red'))
+            print('Esa no es una opcion valida, por favor intentelo nuevamente')
             input("Presiona Enter para continuar...")
 
 def procesar_archivo(controlArchivos,sistema,conexion):
