@@ -47,19 +47,24 @@ def procesar_archivo(controlArchivos,sistema,conexion):
     
 def generar_reporte():
     clear()
-    conexion = sqlite3.connect('mamma_maglioni.db')
+    conexion = sqlite3.connect('mamma_maglioni.db') #me conecto a la BD
     cursor = conexion.cursor()
-    cursor.execute("SELECT COUNT(distinct fecha) FROM pedido")
+    cursor.execute("SELECT COUNT(distinct fecha) FROM pedido") #busco cuántas fechas hay en el archivo, de esa forma sabré hasta donde el archivo debe leer 
     fecha = cursor.fetchone()
     contador =  1
-    while contador <= fecha[0]:     
+    while contador <= fecha[0]:   #contador debe ser menor que el numero de fechas  
         reporte = open("../mamma_maglioni/reporte.txt", "w")
         cursor.execute("SELECT distinct fecha FROM pedido")
         fechas = cursor.fetchall()
-        for fechita in fechas:
+        for fechita in fechas: #por cada fecha escribo en el archivo su pedido
             reporte.write("Fecha " + ''.join(fechita) + os.linesep)
-            reporte.write("Venta total" + os.linesep)
+            reporte.write(os.linesep)
+            reporte.write("Venta total " + os.linesep)
+            reporte.write(os.linesep)
             reporte.write("Ventas por pizza (sin incluir adicionales):" + os.linesep)
+            reporte.write(os.linesep)
+            reporte.write("Tamaño               Unidades                Monto UMs" + os.linesep)
+            reporte.write(os.linesep)
         contador  = 3
         reporte.close()
 
