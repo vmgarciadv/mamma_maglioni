@@ -8,6 +8,25 @@ class File():
     def __init__(self):
         self.ruta = None
         self.pizzas = []
+
+    #Funcion para verificar si ya existe la BD
+    def search_db(self, name, os):
+        if(os == 'Windows'):
+            db = self.specific_os_search_db(name,'C:/Users/Daren/Documents') #Colocar ruta del proyecto, ahi deberia estar el archivo de la BD al ser creada
+        elif(os == 'Linux'):
+            db = self.specific_os_search_db(name,'/home/rafau/Escritorio/ProyectoPython/')#Colocar ruta del proyecto, ahi deberia estar el archivo de la BD al ser creada
+        else:
+            db = self.specific_os_search_db(name,'')
+        if db == None:
+            db = 'false'
+        return db
+
+    #Funcion para verificar si ya existe la BD       
+    def specific_os_search_db(self,name,dir):
+        for root, dirs, files in os.walk(dir):
+            if name in files:
+                self.ruta = root + "/" + name
+                return 'true'
     
     def search(self, name, os):
         if(os == 'Windows'):
@@ -73,24 +92,29 @@ class File():
         i=0
         ing = []
         db = DAO()
-        for r in word_list:
-            if (i==1):
-                cli_fech = r
-                cli = self.obtener_cliente_pizza(cli_fech)
-                fech = self.obtener_fecha(cli_fech)
-                if (";" in cli_fech) and (cli != "") and (fech != ""): 
-                    id_cli = db.insert_cliente(conexion,cli)
-                    id_ped = db.insert_pedido(conexion,fech,id_cli)
-                else:
-                    input("El formato de los pedidos es incorrecto.")
-                    break
-            if 'personal' in r or 'mediana' in r or 'familiar' in r:
-                pizz_ing = r
-                pizz = self.obtener_cliente_pizza(pizz_ing)
-                ing = self.obtener_ingredientes(pizz_ing)
-                db.insert_pedi_pizza(conexion,id_ped,pizz,ing)
-            if(r == 'COMIENZO_PEDIDO\n'): i=1
-            else: i=0
+        if ('COMIENZO_PEDIDO\n' in word_list and 'FIN_PEDIDO\n' in word_list):
+            for r in word_list:
+                if (i==1):
+                    cli_fech = r
+                    cli = self.obtener_cliente_pizza(cli_fech)
+                    fech = self.obtener_fecha(cli_fech)
+                    if (";" in cli_fech) and (cli != "") and (fech != ""): 
+                        id_cli = db.insert_cliente(conexion,cli)
+                        id_ped = db.insert_pedido(conexion,fech,id_cli)
+                    else:
+                        input("El formato de los pedidos es incorrecto.")
+                        break
+                if 'personal' in r or 'mediana' in r or 'familiar' in r:
+                    pizz_ing = r
+                    pizz = self.obtener_cliente_pizza(pizz_ing)
+                    ing = self.obtener_ingredientes(pizz_ing)
+                    db.insert_pedi_pizza(conexion,id_ped,pizz,ing)
+                if(r == 'COMIENZO_PEDIDO\n'): i=1
+                else: i=0
+            self.set_pizzas()
+            self.get_pizzas()
+        else:
+            print("Este documento no posee pedidos o su formato es incorrecto.")
         
     def set_pizzas(self):
         with open(self.ruta) as lineas:
@@ -134,5 +158,4 @@ class File():
         self.search(arc,os)
         wl = self.set_wordlist()
         self.insert_pedidos(wl,conn)
-        self.set_pizzas()
-        self.get_pizzas()
+        
