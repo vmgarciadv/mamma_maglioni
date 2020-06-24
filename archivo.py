@@ -1,8 +1,8 @@
 import os
 from dao import DAO
 from datetime import datetime
-from pizzas import Pizza, PizzaPersonal, PizzaMediana, PizzaFamiliar
-from decoradores import IngredientesDecorator, Jamon, Champiñones, Pimenton, DobleQueso, Aceitunas, Pepperoni, Salchichon
+from pizza.pizzas import PizzaPersonal, PizzaMediana, PizzaFamiliar
+from pizza.decoradores import Jamon, Champiñones, Pimenton, DobleQueso, Aceitunas, Pepperoni, Salchichon
 
 class File():
     def __init__(self):
