@@ -1,5 +1,5 @@
 import os
-from database.dao import DAO
+from dao import DAO
 from datetime import datetime
 from pizzas import Pizza, PizzaPersonal, PizzaMediana, PizzaFamiliar
 from decoradores import IngredientesDecorator, Jamon, Champiñones, Pimenton, DobleQueso, Aceitunas, Pepperoni, Salchichon

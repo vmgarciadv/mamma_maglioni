@@ -2,10 +2,13 @@ import platform
 import os
 from dao import DAO
 from archivo import File
-
-
+import sys
+sys.path.append("../")
+from mamma_maglioni.database.connection import *
 
 def main():
+    sql_connection()
+    
     local = 'Mamma Maglioni'
     controlArchivos = File()
     sistema = platform.system()
@@ -20,7 +23,7 @@ def menu_principal(local,controlArchivos,sistema):
     repetir = True
     while (repetir):
         clear()
-        print('Bienvenido al sistema de control de la pizzeria')
+        print(f'Bienvenido al sistema de control de la pizzeria')
         print('Por favor indique que desea realizar:')
         print('     1.-Procesar archivo de pedidos')
         print('     2.-Generar resumen de ventas')
