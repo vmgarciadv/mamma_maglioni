@@ -12,9 +12,9 @@ class File():
     #Funcion para verificar si ya existe la BD
     def search_db(self, name, os):
         if(os == 'Windows'):
-            db = self.specific_os_search_db(name,'C:/Users/Daren/Documents') #Colocar ruta del proyecto, ahi deberia estar el archivo de la BD al ser creada
+            db = self.specific_os_search_db(name,'../') #Colocar ruta del proyecto, ahi deberia estar el archivo de la BD al ser creada
         elif(os == 'Linux'):
-            db = self.specific_os_search_db(name,'/home/rafau/Escritorio/ProyectoPython/')#Colocar ruta del proyecto, ahi deberia estar el archivo de la BD al ser creada
+            db = self.specific_os_search_db(name,'../')#Colocar ruta del proyecto, ahi deberia estar el archivo de la BD al ser creada
         else:
             db = self.specific_os_search_db(name,'')
         if db == None:
@@ -31,8 +31,7 @@ class File():
     
     def search(self, name, os):
         if(os == 'Windows'):
-            print('here')
-            self.specific_os_search(name,'C:/Users/Daren/Documents')
+            self.specific_os_search(name,'C:/Users')
         elif(os == 'Linux'):
             self.specific_os_search(name,'/home/')
         else:
