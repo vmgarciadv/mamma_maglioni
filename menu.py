@@ -58,85 +58,89 @@ def procesar_archivo(controlArchivos,sistema,conexion):
     else:
         print("\nLa extension del archivo no corresponde.\n")
 
-    
 def generar_reporte(conexion):
     clear()
     cursor = conexion.cursor()
-    cursor.execute("SELECT COUNT(distinct fecha) FROM pedido") #busco cuántas fechas hay en el archivo, de esa forma sabré hasta donde el archivo debe leer 
+    cursor.execute("SELECT COUNT(distinct fecha) FROM pedido") #busco cuántas fechas hay en la base de datos de esa forma sabré hasta donde el archivo debe leer 
     fecha = cursor.fetchone()##2
-    cursor.execute("SELECT p.size, COUNT(pp.fk_pizza), SUM(p.precio) FROM pizza p, pedi_pizza pp, pedido pe where pp.fk_pizza = p.id and pp.fk_pedido = pe.id GROUP BY pp.fk_pizza;")
-    resultado = cursor.fetchall()
-    contador =  1
-    ##while contador <= fecha[0]:   #contador debe ser menor que el numero de fechas  en caso de pedidos1.pz menor a 2 (5/06 y 6/06)
-    reporte = open("../mamma_maglioni/reporte.txt", "w")
-    cursor.execute("SELECT distinct fecha FROM pedido")
-    fechas = cursor.fetchall()
-    for fechita in fechas: #por cada fecha escribo en el archivo su pedido
-        reporte.write("=======================================================\n")
-        reporte.write("Fecha " + ''.join(fechita) + "\n") #os.linesep es para saltar de linea
-        reporte.write("\n")
-        cursor_f = conexion.cursor()
-        cursor_f.execute(f"""select SUM(i.precio) 
-                             from pedi_ing pi, ingrediente i, (select id from pedido where fecha = '{fechita[0]}') as x 
-                             where pi.fk_pedido = x.id and pi.fk_ingrediente = i.id""")
-        valor1 = cursor_f.fetchone()
-        cursor_f.execute(f"""select SUM(p.precio) 
-                            from pedi_pizza pp, pizza p, (select id from pedido where fecha = '{fechita[0]}') as x
-                            where pp.fk_pedido = x.id and pp.fk_pizza = p.id""")
-        valor2 = cursor_f.fetchone()
-        if (valor1[0] is not None):
-            valor_total = valor1[0] + valor2[0]
-            reporte.write(f"Venta total: {valor_total} UMs \n")
-        else:
-            reporte.write(f"Venta total: {valor2[0]} UMs \n")
-        reporte.write("\n")
-        reporte.write("Ventas por pizza (sin incluir adicionales):" + "\n")
-        reporte.write("\n")
-        reporte.write("Tamaño               Unidades                Monto UMs" + "\n")
-        reporte.write("\n")
-        cursor_f.execute(f"""select p.size, pe.fecha, count(p.size), p.precio
-                            from pizza p, pedi_pizza pepi, pedido pe
-                            where p.id = pepi.fk_pizza and pepi.fk_pedido = pe.id and pe.fecha = '{fechita[0]}'
-                            group by p.size, pe.fecha;""")
-        valores = cursor_f.fetchall()
 
-        for valor in valores:
-            if valor[0] != "mediana":
-                reporte.write(f"{valor[0]}             ||{valor[2]}                     ||{valor[3]}\n")
+    if fecha[0] != 0:
+        print("dios mio xd ", fecha[0])
+        cursor.execute("SELECT p.size, COUNT(pp.fk_pizza), SUM(p.precio) FROM pizza p, pedi_pizza pp, pedido pe where pp.fk_pizza = p.id and pp.fk_pedido = pe.id GROUP BY pp.fk_pizza;")
+        resultado = cursor.fetchall()
+        
+        reporte = open("../mamma_maglioni/reporte.txt", "w")
+        cursor.execute("SELECT distinct fecha FROM pedido")
+        fechas = cursor.fetchall()
+        for fechita in fechas: #por cada fecha escribo en el archivo su pedido
+            reporte.write("=======================================================\n")
+            reporte.write("Fecha " + ''.join(fechita) + "\n") #os.linesep es para saltar de linea
+            reporte.write("\n")
+            cursor_f = conexion.cursor()
+            cursor_f.execute(f"""select SUM(i.precio) 
+                                from pedi_ing pi, ingrediente i, (select id from pedido where fecha = '{fechita[0]}') as x 
+                                where pi.fk_pedido = x.id and pi.fk_ingrediente = i.id""")
+            valor1 = cursor_f.fetchone()
+            cursor_f.execute(f"""select SUM(p.precio) 
+                                from pedi_pizza pp, pizza p, (select id from pedido where fecha = '{fechita[0]}') as x
+                                where pp.fk_pedido = x.id and pp.fk_pizza = p.id""")
+            valor2 = cursor_f.fetchone()
+            if (valor1[0] is not None):
+                valor_total = valor1[0] + valor2[0]
+                reporte.write(f"Venta total: {valor_total} UMs \n")
             else:
-                reporte.write(f"{valor[0]}              ||{valor[2]}                     ||{valor[3]}\n")
+                reporte.write(f"Venta total: {valor2[0]} UMs \n")
+            reporte.write("\n")
+            reporte.write("Ventas por pizza (sin incluir adicionales):" + "\n")
+            reporte.write("\n")
+            reporte.write("Tamaño               Unidades                Monto UMs" + "\n")
+            reporte.write("\n")
+            cursor_f.execute(f"""select p.size, pe.fecha, count(p.size), p.precio
+                                from pizza p, pedi_pizza pepi, pedido pe
+                                where p.id = pepi.fk_pizza and pepi.fk_pedido = pe.id and pe.fecha = '{fechita[0]}'
+                                group by p.size, pe.fecha;""")
+            valores = cursor_f.fetchall()
 
-        reporte.write(os.linesep)
-        cursor_f.execute(f"""select i.nombre, pe.fecha, count(i.nombre), i.precio*count(i.nombre)
-                             from ingrediente i, pedi_ing pepi, pedido pe
-                             where i.id = pepi.fk_ingrediente and pepi.fk_pedido = pe.id and pe.fecha = '{fechita[0]}'
-                             group by i.nombre, pe.fecha;""")
-        valores = cursor_f.fetchall()
-        if(valores):
-            reporte.write("Ventas por Ingredientes:\n")
-            reporte.write("\n")
-            reporte.write("Ingredientes               Unidades                Monto UMs" + "\n")
-            reporte.write("\n")
-            ingredientes = normalizar_ingredientes(valores)
-            for ingrediente in ingredientes:
-                if(ingrediente[0] > 0):
-                    if ingrediente[2] == "jamon":
-                        reporte.write(f"{ingrediente[2]}                      ||{ingrediente[0]}                     ||{ingrediente[1]}\n")
-                    elif ingrediente[2] == "pimenton":
-                        reporte.write(f"{ingrediente[2]}                   ||{ingrediente[0]}                     ||{ingrediente[1]}\n")
-                    elif ingrediente[2] == "aceitunas" or ingrediente[2] == "pepperoni":
-                        reporte.write(f"{ingrediente[2]}                  ||{ingrediente[0]}                     ||{ingrediente[1]}\n")
-                    elif ingrediente[2] == "salchichon":
-                        reporte.write(f"{ingrediente[2]}                 ||{ingrediente[0]}                     ||{ingrediente[1]}\n")
-                    else:
-                        reporte.write(f"{ingrediente[2]}                ||{ingrediente[0]}                     ||{ingrediente[1]}\n")
-        else:
-            reporte.write("No se registraron ventas con ingredientes \n")
-            reporte.write("\n")
-        #aqui van todas las consultas por fecha
-        reporte.write(os.linesep)
-        #contador  += 1
-    reporte.close()
+            for valor in valores:
+                if valor[0] != "mediana":
+                    reporte.write(f"{valor[0]}             ||{valor[2]}                     ||{valor[3]}\n")
+                else:
+                    reporte.write(f"{valor[0]}              ||{valor[2]}                     ||{valor[3]}\n")
+
+            reporte.write(os.linesep)
+            cursor_f.execute(f"""select i.nombre, pe.fecha, count(i.nombre), i.precio*count(i.nombre)
+                                from ingrediente i, pedi_ing pepi, pedido pe
+                                where i.id = pepi.fk_ingrediente and pepi.fk_pedido = pe.id and pe.fecha = '{fechita[0]}'
+                                group by i.nombre, pe.fecha;""")
+            valores = cursor_f.fetchall()
+            if(valores):
+                reporte.write("Ventas por Ingredientes:\n")
+                reporte.write("\n")
+                reporte.write("Ingredientes               Unidades                Monto UMs" + "\n")
+                reporte.write("\n")
+                ingredientes = normalizar_ingredientes(valores)
+                for ingrediente in ingredientes:
+                    if(ingrediente[0] > 0):
+                        if ingrediente[2] == "jamon":
+                            reporte.write(f"{ingrediente[2]}                      ||{ingrediente[0]}                     ||{ingrediente[1]}\n")
+                        elif ingrediente[2] == "pimenton":
+                            reporte.write(f"{ingrediente[2]}                   ||{ingrediente[0]}                     ||{ingrediente[1]}\n")
+                        elif ingrediente[2] == "aceitunas" or ingrediente[2] == "pepperoni":
+                            reporte.write(f"{ingrediente[2]}                  ||{ingrediente[0]}                     ||{ingrediente[1]}\n")
+                        elif ingrediente[2] == "salchichon":
+                            reporte.write(f"{ingrediente[2]}                 ||{ingrediente[0]}                     ||{ingrediente[1]}\n")
+                        else:
+                            reporte.write(f"{ingrediente[2]}                ||{ingrediente[0]}                     ||{ingrediente[1]}\n")
+            else:
+                reporte.write("No se registraron ventas con ingredientes \n")
+                reporte.write("\n")
+            #aqui van todas las consultas por fecha
+            reporte.write(os.linesep)
+            #contador  += 1
+        reporte.close()
+        print("¡Archivo de ventas generado!")
+    else: 
+        print("No se han cargado pedidos.")
     input("Presiona Enter para continuar...")
 
 def normalizar_ingredientes(lista):
@@ -171,7 +175,6 @@ def normalizar_ingredientes(lista):
             salchichon[1] +=elemento[3]  
     return [jamon,champinones,pimenton,doble,aceitunas,pepperoni,salchichon]              
     
-
 def ejemplo_archivo():
     clear()
     print("""COMIENZO_PEDIDO
