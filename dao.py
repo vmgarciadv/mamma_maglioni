@@ -60,7 +60,6 @@ class DAO():
     def cerrar_connection(self, conexion):
         try:
             conexion.close()
-            print("Cerrada la conexion con la base de datos.")
         except:
             print("No se pudo cerrar la conexion con la base de datos.")
 

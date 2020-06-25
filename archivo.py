@@ -25,11 +25,13 @@ class File():
     def specific_os_search_db(self,name,dir):
         for root, dirs, files in os.walk(dir):
             if name in files:
+                print('encontrado')
                 self.ruta = root + "/" + name
                 return 'true'
     
     def search(self, name, os):
         if(os == 'Windows'):
+            print('here')
             self.specific_os_search(name,'C:/Users/Daren/Documents')
         elif(os == 'Linux'):
             self.specific_os_search(name,'/home/')
@@ -154,7 +156,6 @@ class File():
         print("Total ventas  = ", precio)
 
     def start(self,arc,os,conn):
-        #arc = input("Nombre del archivo de pedidos: ")
         self.search(arc,os)
         wl = self.set_wordlist()
         self.insert_pedidos(wl,conn)
