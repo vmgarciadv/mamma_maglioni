@@ -11,8 +11,6 @@ class File():
 
     #Funcion para verificar si ya existe la BD
     def search_db(self, name, os):
-        #ROOT_DIR = os.path.abspath('menu.py')
-        #print(ROOT_DIR)
         if(os == 'Windows'):
             db = self.specific_os_search_db(name,'../') #Colocar ruta del proyecto, ahi deberia estar el archivo de la BD al ser creada
         elif(os == 'Linux'):

@@ -26,7 +26,7 @@ def menu_principal(local,controlArchivos,sistema,conexion):
         print('Por favor indique que desea realizar:')
         print('     1.-Procesar archivo de pedidos')
         print('     2.-Generar resumen de ventas')
-        print('     3.-Ejemplo del formato de los archivos de los pedidos.')
+        print('     3.-Ejemplo del formato del archivo de los pedidos.')
         print('     4.-Salir')
         print('\n')
         opcion = input('indique que desea realizar: ')
@@ -49,10 +49,13 @@ def menu_principal(local,controlArchivos,sistema,conexion):
 def procesar_archivo(controlArchivos,sistema,conexion):
     clear()
     archivo = input('Por favor indique el nombre del archivo: ')
-    try:
-        controlArchivos.start(archivo, sistema, conexion)
-    except:
-        print("\nEl archivo indicado no puede ser procesado.\n")
+    if(".pz" in archivo):
+        try:
+            controlArchivos.start(archivo, sistema, conexion)
+        except:
+            print("\nEl archivo indicado no puede ser procesado.\n")
+    else:
+        print("\nLa extension del archivo no corresponde.\n")
 
     
 def generar_reporte():
