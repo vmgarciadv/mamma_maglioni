@@ -32,7 +32,7 @@ class File():
     
     def search(self, name, os):
         if(os == 'Windows'):
-            self.specific_os_search(name,'C:/Users/Daren/Documents')
+            self.specific_os_search(name,'C:/Users')
         elif(os == 'Linux'):
             self.specific_os_search(name,'/home/')
         else:
