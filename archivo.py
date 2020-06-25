@@ -112,50 +112,11 @@ class File():
                     db.insert_pedi_pizza(conexion,id_ped,pizz,ing)
                 if(r == 'COMIENZO_PEDIDO\n'): i=1
                 else: i=0
-            self.set_pizzas()
-            self.get_pizzas()
+            print("¡Archivo de pedidos procesado con éxito!")
         else:
             print("Este documento no posee pedidos o su formato es incorrecto.")
-        
-    def set_pizzas(self):
-        with open(self.ruta) as lineas:
-            for linea in lineas:
-                if 'personal' in linea or 'mediana' in linea or 'familiar' in linea:
-                    self.pizzas.append(linea)
-        print('Pedidos pizzas personales: ', self.pizzas)
-
-    def get_pizzas(self):
-        precio = 0
-
-        for pedido in self.pizzas:
-            if pedido == 'personal\n' or 'personal;' in pedido:
-                pizza = PizzaPersonal()
-            elif pedido == 'mediana\n' or 'mediana;' in pedido:
-                pizza = PizzaMediana()
-            else:
-                pizza = PizzaFamiliar()
-
-            if 'jamón' in pedido or 'jamon' in pedido:
-                pizza = Jamon(pizza)
-            if 'champiñones' in pedido:
-                pizza = Champiñones(pizza)
-            if 'pimentón' in pedido or 'pimenton' in pedido:
-                pizza = Pimenton(pizza)
-            if 'doble queso' in pedido:
-                pizza = DobleQueso(pizza)
-            if 'aceitunas' in pedido:
-                pizza = Aceitunas(pizza)
-            if 'pepperoni' in pedido:
-                pizza = Pepperoni(pizza)
-            if 'salchichon' in pedido:
-                pizza = Salchichon(pizza)
-            
-            print(pizza.informacion() + "y cuesto " +str(pizza.get_precio())) #esto al final no tiene porque mostrarse
-            precio += pizza.get_precio()
-        print("Total ventas  = ", precio)
 
     def start(self,arc,os,conn):
         self.search(arc,os)
         wl = self.set_wordlist()
         self.insert_pedidos(wl,conn)
-        
