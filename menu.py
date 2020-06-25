@@ -65,7 +65,6 @@ def generar_reporte(conexion):
     fecha = cursor.fetchone()##2
 
     if fecha[0] != 0:
-        print("dios mio xd ", fecha[0])
         cursor.execute("SELECT p.size, COUNT(pp.fk_pizza), SUM(p.precio) FROM pizza p, pedi_pizza pp, pedido pe where pp.fk_pizza = p.id and pp.fk_pedido = pe.id GROUP BY pp.fk_pizza;")
         resultado = cursor.fetchall()
         

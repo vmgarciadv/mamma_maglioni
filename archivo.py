@@ -90,7 +90,7 @@ class File():
 
     #Para insertar cada pedido del archivo en la base de datos.
     def insert_pedidos(self, word_list, conexion):
-        i=0
+        i, error = 0, 0
         ing = []
         db = DAO()
         if ('COMIENZO_PEDIDO\n' in word_list and 'FIN_PEDIDO\n' in word_list):
@@ -103,7 +103,8 @@ class File():
                         id_cli = db.insert_cliente(conexion,cli)
                         id_ped = db.insert_pedido(conexion,fech,id_cli)
                     else:
-                        input("El formato de los pedidos es incorrecto.")
+                        print("El formato de los pedidos es incorrecto.")
+                        error = 1
                         break
                 if 'personal' in r or 'mediana' in r or 'familiar' in r:
                     pizz_ing = r
@@ -112,9 +113,11 @@ class File():
                     db.insert_pedi_pizza(conexion,id_ped,pizz,ing)
                 if(r == 'COMIENZO_PEDIDO\n'): i=1
                 else: i=0
-            print("¡Archivo de pedidos procesado con éxito!")
         else:
             print("Este documento no posee pedidos o su formato es incorrecto.")
+
+        if error != 1:
+                    print("¡Archivo de pedidos procesado con éxito!")
 
     def start(self,arc,os,conn):
         self.search(arc,os)
