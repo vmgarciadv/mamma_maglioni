@@ -72,6 +72,7 @@ def generar_reporte(conexion):
     cursor.execute("SELECT distinct fecha FROM pedido")
     fechas = cursor.fetchall()
     for fechita in fechas: #por cada fecha escribo en el archivo su pedido
+        reporte.write("=======================================================\n")
         reporte.write("Fecha " + ''.join(fechita) + "\n") #os.linesep es para saltar de linea
         reporte.write("\n")
         cursor_f = conexion.cursor()
@@ -98,8 +99,13 @@ def generar_reporte(conexion):
                             where p.id = pepi.fk_pizza and pepi.fk_pedido = pe.id and pe.fecha = '{fechita[0]}'
                             group by p.size, pe.fecha;""")
         valores = cursor_f.fetchall()
+
         for valor in valores:
-            reporte.write(f"{valor[0]}             ||{valor[2]}                     ||{valor[3]}\n")
+            if valor[0] != "mediana":
+                reporte.write(f"{valor[0]}             ||{valor[2]}                     ||{valor[3]}\n")
+            else:
+                reporte.write(f"{valor[0]}              ||{valor[2]}                     ||{valor[3]}\n")
+                
         reporte.write(os.linesep)
         cursor_f.execute(f"""select i.nombre, pe.fecha, count(i.nombre), i.precio*count(i.nombre)
                              from ingrediente i, pedi_ing pepi, pedido pe

@@ -1,39 +1,39 @@
+=======================================================
 Fecha 2020-06-05
 
 Venta total: 10.0 UMs 
 
 Ventas por pizza (sin incluir adicionales):
 
-Tama�o               Unidades                Monto UMs
+Tamaño               Unidades                Monto UMs
 
 personal             ||1                     ||10.0
-
 
 No se registraron ventas con ingredientes 
 
 
-
+=======================================================
 Fecha 2020-06-06
 
-Venta total: 127.2 UMs 
+Venta total: 144.55 UMs 
 
 Ventas por pizza (sin incluir adicionales):
 
-Tama�o               Unidades                Monto UMs
+Tamaño               Unidades                Monto UMs
 
 familiar             ||3                     ||20.0
-mediana             ||2                     ||15.0
+mediana              ||2                     ||15.0
 personal             ||2                     ||10.0
-
 
 Ventas por Ingredientes:
 
 Ingredientes               Unidades                Monto UMs
 
-jamon                ||3       ||5.5
+jamon                ||5       ||9.0
+champinones                ||4       ||8.35
+pimenton                ||3       ||5.5
 doble queso                ||2       ||2.5
 aceitunas                ||2       ||5.2
 pepperoni                ||1       ||1.9
 salchichon                ||1       ||2.1
-
 
