@@ -4,12 +4,16 @@ from datetime import datetime
 from pizza.pizzas import PizzaPersonal, PizzaMediana, PizzaFamiliar
 from pizza.decoradores import Jamon, Champiñones, Pimenton, DobleQueso, Aceitunas, Pepperoni, Salchichon
 
+"""
+Clase File que se encarga de hacer operaciones sobre los archivos
+"""
+
 class File():
     def __init__(self):
         self.ruta = None
         self.pizzas = []
 
-    #Funcion para verificar si ya existe la BD
+    """Funcion para verificar si ya existe la BD"""
     def search_db(self, name, os):
         if(os == 'Windows'):
             db = self.specific_os_search_db(name,'../') #Colocar ruta del proyecto, ahi deberia estar el archivo de la BD al ser creada
@@ -21,7 +25,7 @@ class File():
             db = 'false'
         return db
 
-    #Funcion para verificar si ya existe la BD       
+    """Funcion para verificar si ya existe la BD"""       
     def specific_os_search_db(self,name,dir):
         for root, dirs, files in os.walk(dir):
             if name in files:
@@ -29,6 +33,7 @@ class File():
                 self.ruta = root + "/" + name
                 return 'true'
     
+    """Funcion para buscar el archivo de entrada con los pedidos"""
     def search(self, name, os):
         if(os == 'Windows'):
             self.specific_os_search(name,'C:/Users')
@@ -37,20 +42,22 @@ class File():
         else:
             self.specific_os_search(name,'')
     
+    """Funcion que retorna la ruta donde se encuentra el archivo con los pedidos"""
     def specific_os_search(self,name,dir):
         for root, dirs, files in os.walk(dir):
             if name in files:
                 self.ruta = root + "/" + name
                 break
      
-    #Cuarda en un array todas las lineas del documento.
+    """Guarda en un array todas las lineas del documento"""
     def set_wordlist(self):
         word_list = []
         with open(self.ruta) as lineas:
             for linea in lineas:
                 word_list.append(linea)
         return(word_list)
-    #Funciona para obtener la pizza y el cliente de las lineas que se extrajeron del documento
+
+    """Funcion para obtener la pizza y el cliente de las lineas que se extrajeron del documento"""
     def obtener_cliente_pizza(self, cli_fech):
         cliente = ""
         for x in cli_fech:
@@ -58,7 +65,8 @@ class File():
                 cliente += x
             if x == ";": break
         return cliente
-    #Funciona para obtener la fecha de las lineas que se extrajeron del documento
+
+    """Funcion para obtener la fecha de las lineas que se extrajeron del documento"""
     def obtener_fecha(self, cli_fech):
         i=0
         fecha = ""
@@ -74,7 +82,7 @@ class File():
             fecha = ""
             return fecha    
         
-    #Funciona para obtener los ingredientes de las lineas que se extrajeron del documento
+    """Funcion para obtener los ingredientes de las lineas que se extrajeron del documento"""
     def obtener_ingredientes(self, pizz_ing):
         i=0
         ing = ""
@@ -88,7 +96,7 @@ class File():
             if x == ";": i=1
         return ingredientes
 
-    #Para insertar cada pedido del archivo en la base de datos.
+    """Funcion para insertar cada pedido del archivo en la base de datos"""
     def insert_pedidos(self, word_list, conexion):
         i, error = 0, 0
         ing = []
@@ -119,6 +127,7 @@ class File():
         if error != 1:
                     print("¡Archivo de pedidos procesado con éxito!")
 
+    """Funcion que inicia las operaciones"""
     def start(self,arc,os,conn):
         self.search(arc,os)
         wl = self.set_wordlist()

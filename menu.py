@@ -3,21 +3,23 @@ import os
 from dao import DAO
 from archivo import File
 
+"""Funcion principal"""
 def main():
     local = 'Mamma Maglioni'
     controlArchivos = File()
     sistema = platform.system()
-    #controlArchivos.start('pedidos1.pz',sistema)
     clear()
     db = 'mamma_maglioni.db'
     bool_db = controlArchivos.search_db(db,sistema)
     conn = DAO()
     if (bool_db == 'false'): 
         conn.creando_db()
-    conexion = conn.create_connection() #Llama a la funcion para crear la conexion con l
+    """Llama a la funcion para crear la conexion con la base de datos"""
+    conexion = conn.create_connection()
     menu_principal(local,controlArchivos,sistema,conexion)
     pass
 
+"""Funcion que genera el menu"""
 def menu_principal(local,controlArchivos,sistema,conexion):
     conn = DAO()
     repetir = True
@@ -47,6 +49,7 @@ def menu_principal(local,controlArchivos,sistema,conexion):
             print('Esa no es una opcion valida, por favor intentelo nuevamente')
             input("Presiona Enter para volver...")
 
+"""Funcion para que el usuario ingrese el archivo de los pedidos"""
 def procesar_archivo(controlArchivos,sistema,conexion):
     clear()
     archivo = input('Por favor indique el nombre del archivo: ')
@@ -58,10 +61,16 @@ def procesar_archivo(controlArchivos,sistema,conexion):
     else:
         print("\nLa extension del archivo no corresponde.\n")
 
+"""Funcion para generar el reporte de las ventas"""
 def generar_reporte(conexion):
     clear()
     cursor = conexion.cursor()
-    cursor.execute("SELECT COUNT(distinct fecha) FROM pedido") #busco cuántas fechas hay en la base de datos de esa forma sabré hasta donde el archivo debe leer 
+
+    """
+    Busca cuántas fechas hay en la base de datos 
+    de esa forma se sabe hasta donde el archivo debe leer
+    """
+    cursor.execute("SELECT COUNT(distinct fecha) FROM pedido") 
     fecha = cursor.fetchone()##2
 
     if fecha[0] != 0:
@@ -71,9 +80,11 @@ def generar_reporte(conexion):
         reporte = open("../mamma_maglioni/reporte.txt", "w")
         cursor.execute("SELECT distinct fecha FROM pedido")
         fechas = cursor.fetchall()
-        for fechita in fechas: #por cada fecha escribo en el archivo su pedido
+
+        """Por cada fecha se escribe en el archivo su pedido"""
+        for fechita in fechas: 
             reporte.write("=======================================================\n")
-            reporte.write("Fecha " + ''.join(fechita) + "\n") #os.linesep es para saltar de linea
+            reporte.write("Fecha " + ''.join(fechita) + "\n")
             reporte.write("\n")
             cursor_f = conexion.cursor()
             cursor_f.execute(f"""select SUM(i.precio) 
@@ -106,6 +117,7 @@ def generar_reporte(conexion):
                 else:
                     reporte.write(f"{valor[0]}              ||{valor[2]}                     ||{valor[3]}\n")
 
+            """os.linesep es para saltar de linea"""
             reporte.write(os.linesep)
             cursor_f.execute(f"""select i.nombre, pe.fecha, count(i.nombre), i.precio*count(i.nombre)
                                 from ingrediente i, pedi_ing pepi, pedido pe
@@ -133,15 +145,17 @@ def generar_reporte(conexion):
             else:
                 reporte.write("No se registraron ventas con ingredientes \n")
                 reporte.write("\n")
-            #aqui van todas las consultas por fecha
+
             reporte.write(os.linesep)
-            #contador  += 1
+
         reporte.close()
         print("¡Archivo de ventas generado!")
     else: 
         print("No se han cargado pedidos.")
     input("Presiona Enter para continuar...")
 
+
+"""Funcion para obtener en una lista los ingredientes del reporte"""
 def normalizar_ingredientes(lista):
     jamon = [0,0,'jamon']
     champinones = [0,0,'champinones']
@@ -174,6 +188,10 @@ def normalizar_ingredientes(lista):
             salchichon[1] +=elemento[3]  
     return [jamon,champinones,pimenton,doble,aceitunas,pepperoni,salchichon]              
     
+"""
+Opcion del menu que muestra un ejemplo 
+para un archivo de entrada de pedidos
+"""
 def ejemplo_archivo():
     clear()
     print("""COMIENZO_PEDIDO

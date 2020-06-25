@@ -1,8 +1,13 @@
 import sqlite3
 from sqlite3 import Error
 
+"""
+Clase DAO que implementa las transacciones sobre la base de datos
+"""
+
 class DAO():
 
+    """Funcion para realizar la conexion la base de datos"""
     def sql_connection(self):
         try:
             conn = sqlite3.connect('mamma_maglioni.db')
@@ -11,6 +16,7 @@ class DAO():
         except Error:
             print(Error)
 
+    """Funcion para crear las tablas de la base de datos"""
     def sql_table(self,conn):
         try:
             cursor = conn.cursor()
@@ -24,6 +30,7 @@ class DAO():
         except:
             print('Las tablas ya han sido creadas.')
 
+    """Funcion para insertar los datos de pizzas e ingredientes en la base de datos"""
     def sql_insert(self,conn):
         cursor = conn.cursor()
         try:
@@ -43,12 +50,13 @@ class DAO():
         except: 
             print('Los datos ya han sido insertados.')
     
+    """Funcion que llama a los metodos respectivos para la creacion de la base de datos"""
     def creando_db(self):
         conn = self.sql_connection()
         self.sql_table(conn)
         self.sql_insert(conn)
 
-    #Crea la conexion con la base de datos
+    """Crea la conexion con la base de datos"""
     def create_connection(self):
         try:
             conexion = sqlite3.connect('mamma_maglioni.db')
@@ -56,14 +64,15 @@ class DAO():
             return conexion
         except Error:
             print(Error)
-    #Cierra la conexion con la base de datos
+
+    """Cierra la conexion con la base de datos"""
     def cerrar_connection(self, conexion):
         try:
             conexion.close()
         except:
             print("No se pudo cerrar la conexion con la base de datos.")
 
-    #Inserta cliente en la base de datos por medio de los archivos
+    """Inserta cliente en la base de datos por medio de los archivos"""
     def insert_cliente(self, conexion, cli):
         cursor = conexion.cursor()
         i = 0
@@ -88,7 +97,8 @@ class DAO():
                 print(row)"""
         except: 
             print('def insert_cliente: Los datos no pudieron insertarse.')
-    #Inserta los pedidos en la base de datos por medio de los archivos
+
+    """Inserta los pedidos en la base de datos por medio de los archivos"""
     def insert_pedido(self, conexion, fecha, id_cli):
         cursor = conexion.cursor()
         try:
@@ -100,7 +110,7 @@ class DAO():
         except: 
             print('def insert_pedido: Los datos no pudieron insertarse.')
             
-    #Retorna el id de la pizza segun el tamano
+    """Retorna el id de la pizza segun el tamano"""
     def buscar_pizza_size(self,conexion,pizza):
         cursor = conexion.cursor()
         try:
@@ -111,7 +121,7 @@ class DAO():
         except: 
             print('def buscar_pizza_size: No se encontraron datos')
 
-    #Retorna el tamano de la pizza por su id
+    """Retorna el tamano de la pizza por su id"""
     def buscar_pizza(self,conexion,id_pizza):
         cursor = conexion.cursor()
         try:
@@ -122,7 +132,7 @@ class DAO():
         except: 
             print('def buscar_pizza: No se encontraron datos')
     
-    #Retorna el nombre del cliente por el id del pedido
+   """Retorna el nombre del cliente por el id del pedido"""
     def buscar_cliente(self,conexion,id_pedido):
         cursor = conexion.cursor()
         try:
@@ -133,7 +143,7 @@ class DAO():
         except: 
             print('def buscar_cliente: No se encontraron datos')
 
-    #Retorna el nombre del ingrediente por el id del mismo
+    """Retorna el nombre del ingrediente por el id del mismo"""
     def buscar_ingrediente(self,conexion,id_ing):
         cursor = conexion.cursor()
         try:
@@ -144,14 +154,17 @@ class DAO():
         except: 
             print('def buscar_ingrediente: No se encontraron datos')
 
-    #Modifica el ingrediente para que se ingresen a la bd con un formato estandar sin caracteres especiales
+    """
+    Modifica el ingrediente para que se ingresen a la base de datos 
+    con un formato estandar sin caracteres especiales
+    """
     def modificar_ing(self,ingrediente):
         if ingrediente == 'champiñones': ingrediente = 'champinones'
         elif ingrediente == 'jamón': ingrediente = 'jamon'
         elif ingrediente == 'pimentón': ingrediente = 'pimenton'
         return ingrediente
 
-    #Retorna una lista de las id de los ingredientes al registrar en un pedido
+    """Retorna una lista de las id de los ingredientes al registrar en un pedido"""
     def list_id_ingr(self,conexion,ingredientes,pizza):
         cursor = conexion.cursor()
         id_list_ingr = []
@@ -170,7 +183,7 @@ class DAO():
             print('def list_id_ingr: No se encontraron datos')
         return id_list_ingr
 
-    #Inserta en la tabla pedi_pizza las foraneas respectivas que conforman un pedido.
+    """Inserta en la tabla pedi_pizza las foraneas respectivas que conforman un pedido"""
     def insert_pedi_pizza(self,conexion,id_ped,pizza,ingredientes):
         cursor = conexion.cursor()
         id_pizza = self.buscar_pizza_size(conexion,pizza)

@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod #modulo ABC para clases abstractas
 
-"""Super clase Pizza"""
+"""
+Modulo pizzas donde se encuentran las clases para los distintos tipos de pizza
+"""
 
 class Pizza(ABC):
     def __init__(self, size):
@@ -13,8 +15,6 @@ class Pizza(ABC):
 
     def informacion(self):
         return "Soy una pizza " + self.size + " con: "
-
-"""Hijas concretas"""
 
 class PizzaPersonal(Pizza):
     def __init__(self):
