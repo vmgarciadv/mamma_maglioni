@@ -105,7 +105,7 @@ def generar_reporte(conexion):
                 reporte.write(f"{valor[0]}             ||{valor[2]}                     ||{valor[3]}\n")
             else:
                 reporte.write(f"{valor[0]}              ||{valor[2]}                     ||{valor[3]}\n")
-                
+
         reporte.write(os.linesep)
         cursor_f.execute(f"""select i.nombre, pe.fecha, count(i.nombre), i.precio*count(i.nombre)
                              from ingrediente i, pedi_ing pepi, pedido pe
@@ -120,7 +120,16 @@ def generar_reporte(conexion):
             ingredientes = normalizar_ingredientes(valores)
             for ingrediente in ingredientes:
                 if(ingrediente[0] > 0):
-                    reporte.write(f"{ingrediente[2]}                ||{ingrediente[0]}       ||{ingrediente[1]}\n")
+                    if ingrediente[2] == "jamon":
+                        reporte.write(f"{ingrediente[2]}                      ||{ingrediente[0]}                     ||{ingrediente[1]}\n")
+                    elif ingrediente[2] == "pimenton":
+                        reporte.write(f"{ingrediente[2]}                   ||{ingrediente[0]}                     ||{ingrediente[1]}\n")
+                    elif ingrediente[2] == "aceitunas" or ingrediente[2] == "pepperoni":
+                        reporte.write(f"{ingrediente[2]}                  ||{ingrediente[0]}                     ||{ingrediente[1]}\n")
+                    elif ingrediente[2] == "salchichon":
+                        reporte.write(f"{ingrediente[2]}                 ||{ingrediente[0]}                     ||{ingrediente[1]}\n")
+                    else:
+                        reporte.write(f"{ingrediente[2]}                ||{ingrediente[0]}                     ||{ingrediente[1]}\n")
         else:
             reporte.write("No se registraron ventas con ingredientes \n")
             reporte.write("\n")

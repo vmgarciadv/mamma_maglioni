@@ -29,11 +29,11 @@ Ventas por Ingredientes:
 
 Ingredientes               Unidades                Monto UMs
 
-jamon                ||5       ||9.0
-champinones                ||4       ||8.35
-pimenton                ||3       ||5.5
-doble queso                ||2       ||2.5
-aceitunas                ||2       ||5.2
-pepperoni                ||1       ||1.9
-salchichon                ||1       ||2.1
+jamon                      ||5                     ||9.0
+champinones                ||4                     ||8.35
+pimenton                   ||3                     ||5.5
+doble queso                ||2                     ||2.5
+aceitunas                  ||2                     ||5.2
+pepperoni                  ||1                     ||1.9
+salchichon                 ||1                     ||2.1
 
