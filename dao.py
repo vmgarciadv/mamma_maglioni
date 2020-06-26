@@ -132,7 +132,7 @@ class DAO():
         except: 
             print('def buscar_pizza: No se encontraron datos')
     
-   """Retorna el nombre del cliente por el id del pedido"""
+    """Retorna el nombre del cliente por el id del pedido"""
     def buscar_cliente(self,conexion,id_pedido):
         cursor = conexion.cursor()
         try:
